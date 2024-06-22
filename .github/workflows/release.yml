@@ -19,7 +19,7 @@ jobs:
           go-version: 1.22
 
       - name: Build Windows x64 executable
-        run: GOOS=windows GOARCH=amd64 go build -o clip.exe
+        run: GOOS=windows GOARCH=amd64 go build -ldflags "-H=windowsgui" -o clip.exe
 
       - name: Prepare release folder
         run: |

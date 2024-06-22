@@ -25,7 +25,7 @@ jobs:
         run: |
           mkdir release
           mv clip.exe release/
-          cp config_template.yml release/
+          mv config_template.yml release/config.yml
 
       - name: Create zip archive
         run: |

@@ -4,6 +4,7 @@ import (
 	"path/filepath"
 	"sync"
 	"time"
+	"os"
 
 	"github.com/fsnotify/fsnotify"
 	"github.com/sirupsen/logrus"
@@ -68,7 +69,14 @@ func (fwp *FileWatcherPlugin) handleEvent(event fsnotify.Event) {
 	if eventDir == watchDir {
 		if !event.Op.Has(fsnotify.Remove) && filepath.Ext(filename) == ".mp4" && filename != "out.mp4" {
 			log.Debugf("New file added: `%s`", event.Name)
-			fwp.AddFile(event.Name)
+
+			time.Sleep(2 * time.Second)
+
+			if _, err := os.Stat(event.Name); err == nil {
+                fwp.AddFile(event.Name)
+            } else {
+                log.Warnf("File not accessible after delay: `%s`: %v", event.Name, err)
+            }
 		} else {
 			log.Debugf("Ignored file: `%s`", event.Name)
 		}
